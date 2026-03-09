@@ -50,7 +50,7 @@ def is_question(text: str) -> bool:
     return any(lower.startswith(w) for w in ["how ", "what ", "why ", "where ", "when ", "who ", "is ", "can ", "does "])
 
 
-def generate_digest(messages: list[dict], max_topics: int = 5) -> dict:
+def generate_digest(messages, max_topics: int = 5) -> dict:
     """Analyze messages and produce digest data."""
     if not messages:
         return {"empty": True, "date": datetime.now(timezone.utc).strftime("%Y-%m-%d")}
