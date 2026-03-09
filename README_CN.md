@@ -18,6 +18,7 @@
 <p align="center">
   <a href="#功能列表">功能列表</a> &bull;
   <a href="#快速开始">快速开始</a> &bull;
+  <a href="#bot-权限设置">Bot 权限设置</a> &bull;
   <a href="#模块详情">模块详情</a> &bull;
   <a href="#配置说明">配置说明</a> &bull;
   <a href="./README.md">English</a>
@@ -92,6 +93,26 @@ openclaw skill install ./community-manager
 - *"看看社群排行榜"*
 - *"#support 里有没有没回答的问题？"*
 
+## Bot 权限设置
+
+你的 OpenClaw Bot 在各平台需要特定权限才能正常工作。以下是快速概览：
+
+### Discord
+- 在 [Developer Portal](https://discord.com/developers/applications) 创建 Bot
+- 开启 **Message Content Intent**（必须）
+- 邀请时勾选权限：读取消息、发送消息、管理消息、管理角色、读取消息历史
+
+### Telegram
+- 通过 [@BotFather](https://t.me/BotFather) 创建 Bot
+- **关键步骤**：执行 `/setprivacy` → 选择 `Disabled`（否则 Bot 无法读取群内消息）
+- 将 Bot 加入群组并设为**管理员**，开启"删除消息"权限
+
+### Slack
+- 创建 [Slack App](https://api.slack.com/apps)，配置 OAuth 权限：`channels:history`、`chat:write`、`reactions:read`、`users:read`
+- 在每个频道执行 `/invite @your-bot`
+
+完整的设置指南（含各功能权限矩阵和故障排除）见 [`references/setup-guide.md`](references/setup-guide.md)。
+
 ## 模块详情
 
 ### 核心模块
@@ -152,6 +173,7 @@ openclaw skill install ./community-manager
 community-manager/
 ├── SKILL.md                              # Skill 定义（12 个模块）
 ├── references/
+│   ├── setup-guide.md                    # Bot 权限与平台设置指南
 │   ├── faq-guide.md                      # FAQ 知识库配置指南
 │   ├── daily-digest.md                   # 摘要工作流详情
 │   ├── moderation-policies.md            # 审核严重度与升级策略

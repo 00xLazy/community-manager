@@ -21,6 +21,8 @@ metadata:
 
 Automate community operations across Discord, Telegram, and Slack channels.
 
+**Before using this skill**, ensure your OpenClaw bot has the correct permissions in each platform. See [references/setup-guide.md](references/setup-guide.md) for step-by-step setup instructions, required permissions per feature, and troubleshooting.
+
 ## Capabilities
 
 1. **FAQ Auto-Reply** — detect repeated questions and answer from a knowledge base

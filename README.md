@@ -18,6 +18,7 @@
 <p align="center">
   <a href="#features">Features</a> &bull;
   <a href="#quick-start">Quick Start</a> &bull;
+  <a href="#bot-permissions">Bot Permissions</a> &bull;
   <a href="#modules">Modules</a> &bull;
   <a href="#configuration">Configuration</a> &bull;
   <a href="./README_CN.md">中文文档</a>
@@ -92,6 +93,26 @@ Just talk to your OpenClaw assistant:
 - *"Show the community leaderboard"*
 - *"Any unanswered questions in #support?"*
 
+## Bot Permissions
+
+Your OpenClaw bot needs specific permissions in each platform for the skill to work. Here's a quick overview:
+
+### Discord
+- Create a bot in [Developer Portal](https://discord.com/developers/applications)
+- Enable **Message Content Intent** (required)
+- Invite with permissions: Read Messages, Send Messages, Manage Messages, Manage Roles, Read Message History
+
+### Telegram
+- Create a bot via [@BotFather](https://t.me/BotFather)
+- **Critical**: Run `/setprivacy` → `Disabled` (otherwise the bot can't see group messages)
+- Add the bot to your group and set as **Admin** with "Delete messages" permission
+
+### Slack
+- Create a [Slack App](https://api.slack.com/apps) with OAuth scopes: `channels:history`, `chat:write`, `reactions:read`, `users:read`
+- `/invite @your-bot` to each channel
+
+For the full setup guide with per-feature permission matrix and troubleshooting, see [`references/setup-guide.md`](references/setup-guide.md).
+
 ## Modules
 
 ### Core
@@ -152,6 +173,7 @@ Key config options:
 community-manager/
 ├── SKILL.md                              # Skill definition (12 modules)
 ├── references/
+│   ├── setup-guide.md                    # Bot permissions & platform setup
 │   ├── faq-guide.md                      # FAQ knowledge base configuration
 │   ├── daily-digest.md                   # Digest workflow details
 │   ├── moderation-policies.md            # Moderation severity & escalation
