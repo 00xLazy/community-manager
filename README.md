@@ -42,6 +42,14 @@
 | **Event Detection** | Detect raids, spam waves, mass leaves, link floods |
 | **Scheduled Announcements** | Cron-based, cross-channel, recurring announcements |
 | **Thread Tracker** | Monitor unanswered questions with configurable timeouts |
+| **AI Conversation Starter** | Auto-generate discussion topics during quiet periods |
+| **Mentor Matching** | Pair newcomers with experienced members by expertise |
+| **Polls & Surveys** | Community polls with auto-summarized results and AI insights |
+| **AMA Mode** | Structured Q&A sessions with question queuing and upvoting |
+| **Community Challenges** | Daily challenges, weekly quests, and collaborative goals |
+| **Member Profiles** | Auto-generated expertise profiles based on activity |
+| **Community Health Dashboard** | Comprehensive metrics, trends, and actionable insights |
+| **Multilingual Bridge** | Real-time translation bridge between language-specific channels |
 
 ## Quick Start
 
@@ -143,6 +151,24 @@ For the full setup guide with per-feature permission matrix and troubleshooting,
 
 - **Thread Tracker** — Tracks questions and alerts admin after configurable timeout (default 24h). Uses [`scripts/thread_tracker.py`](scripts/thread_tracker.py).
 
+### Social & Engagement
+
+- **AI Conversation Starter** — Auto-generates discussion topics during quiet periods. Varies topic types and tracks engagement. See [`references/conversation-starters.md`](references/conversation-starters.md).
+
+- **Mentor Matching** — Pairs newcomers with experienced members based on expertise overlap, availability, and helpfulness. Opt-in for mentors. See [`references/mentor-matching.md`](references/mentor-matching.md).
+
+- **Polls & Surveys** — Reaction-based or multi-question polls with auto-summarized results and AI insights. Anonymous by default.
+
+- **AMA Mode** — Structured Ask-Me-Anything sessions with question queuing, upvoting, and auto-generated summaries.
+
+- **Community Challenges** — Daily challenges, weekly quests, and collaborative community goals with a point system and badges. See [`references/community-challenges.md`](references/community-challenges.md).
+
+- **Member Profiles** — Auto-generated expertise profiles based on activity, showing badges, skill areas, and contribution stats.
+
+- **Community Health Dashboard** — Weekly/monthly reports with health score, growth, engagement, sentiment trends, and actionable recommendations. Uses [`scripts/health_report.py`](scripts/health_report.py).
+
+- **Multilingual Bridge** — Real-time translation bridge between language-specific channels. Shows original text alongside translation.
+
 ## Scripts
 
 All scripts are standalone Python 3 tools with no external dependencies:
@@ -152,6 +178,7 @@ All scripts are standalone Python 3 tools with no external dependencies:
 | `digest.py` | Generate daily digest from messages | `python3 scripts/digest.py --input messages.json` |
 | `event_detector.py` | Detect anomalous events | `python3 scripts/event_detector.py --input events.json` |
 | `thread_tracker.py` | Track unanswered questions | `python3 scripts/thread_tracker.py --input messages.json --timeout 24` |
+| `health_report.py` | Generate community health report | `python3 scripts/health_report.py --input activity.json` |
 
 ## Configuration
 
@@ -171,18 +198,22 @@ Key config options:
 
 ```
 community-manager/
-├── SKILL.md                              # Skill definition (12 modules)
+├── SKILL.md                              # Skill definition (20 modules)
 ├── references/
 │   ├── setup-guide.md                    # Bot permissions & platform setup
 │   ├── faq-guide.md                      # FAQ knowledge base configuration
 │   ├── daily-digest.md                   # Digest workflow details
 │   ├── moderation-policies.md            # Moderation severity & escalation
 │   ├── sentiment-tracking.md             # Sentiment scoring methodology
-│   └── knowledge-extraction.md           # Knowledge capture heuristics
+│   ├── knowledge-extraction.md           # Knowledge capture heuristics
+│   ├── conversation-starters.md          # Discussion topic templates
+│   ├── mentor-matching.md                # Mentor matching algorithm
+│   └── community-challenges.md           # Challenge & quest templates
 └── scripts/
     ├── digest.py                         # Message digest generator
     ├── event_detector.py                 # Anomaly detection engine
-    └── thread_tracker.py                 # Unanswered question tracker
+    ├── thread_tracker.py                 # Unanswered question tracker
+    └── health_report.py                  # Community health report generator
 ```
 
 ## Contributing

@@ -42,6 +42,14 @@
 | **事件检测** | 检测 raid 攻击、垃圾消息浪潮、大规模退群、链接洪水 |
 | **定时公告** | 基于 Cron 的跨渠道定时公告 |
 | **线索追踪** | 监控未回答的问题，超时自动提醒 |
+| **AI 话题生成** | 冷场时自动生成讨论话题，保持社群活跃 |
+| **导师匹配** | 根据专长自动为新人匹配经验丰富的导师 |
+| **投票与调查** | 社群投票，自动汇总结果并生成 AI 洞察 |
+| **AMA 模式** | 结构化问答环节，支持问题排队和投票优先 |
+| **社群挑战** | 每日挑战、每周任务和协作式社群目标 |
+| **成员档案** | 基于活动数据自动生成的专长档案 |
+| **社群健康仪表盘** | 综合指标、趋势分析和可执行建议 |
+| **多语言桥接** | 不同语言频道之间的实时翻译桥接 |
 
 ## 快速开始
 
@@ -143,6 +151,24 @@ openclaw skill install ./community-manager
 
 - **线索追踪** — 追踪问题并在超时后（默认 24 小时）提醒管理员。使用 [`scripts/thread_tracker.py`](scripts/thread_tracker.py)。
 
+### 社交与互动模块
+
+- **AI 话题生成** — 社群冷场时自动生成讨论话题，变换话题类型并追踪参与度。详见 [`references/conversation-starters.md`](references/conversation-starters.md)。
+
+- **导师匹配** — 基于专长重合度、可用性和帮助力评分，为新人匹配导师。导师需主动开启。详见 [`references/mentor-matching.md`](references/mentor-matching.md)。
+
+- **投票与调查** — 基于表情反应或按钮的投票，自动汇总结果并生成 AI 洞察。默认匿名。
+
+- **AMA 模式** — 结构化问答环节，支持问题排队、投票优先、自动生成摘要。
+
+- **社群挑战** — 每日挑战、每周任务和协作式社群目标，积分系统 + 徽章奖励。详见 [`references/community-challenges.md`](references/community-challenges.md)。
+
+- **成员档案** — 基于活动数据自动生成专长档案，展示徽章、技能领域和贡献统计。
+
+- **社群健康仪表盘** — 每周/月报告，包含健康评分、增长、活跃度、情绪趋势及可执行建议。使用 [`scripts/health_report.py`](scripts/health_report.py)。
+
+- **多语言桥接** — 不同语言频道间的实时翻译桥接。翻译旁附原文，保持透明。
+
 ## 脚本工具
 
 所有脚本均为独立的 Python 3 工具，无外部依赖：
@@ -152,6 +178,7 @@ openclaw skill install ./community-manager
 | `digest.py` | 从消息生成每日摘要 | `python3 scripts/digest.py --input messages.json` |
 | `event_detector.py` | 检测异常事件 | `python3 scripts/event_detector.py --input events.json` |
 | `thread_tracker.py` | 追踪未回答的问题 | `python3 scripts/thread_tracker.py --input messages.json --timeout 24` |
+| `health_report.py` | 生成社群健康报告 | `python3 scripts/health_report.py --input activity.json` |
 
 ## 配置说明
 
@@ -171,18 +198,22 @@ openclaw skill install ./community-manager
 
 ```
 community-manager/
-├── SKILL.md                              # Skill 定义（12 个模块）
+├── SKILL.md                              # Skill 定义（20 个模块）
 ├── references/
 │   ├── setup-guide.md                    # Bot 权限与平台设置指南
 │   ├── faq-guide.md                      # FAQ 知识库配置指南
 │   ├── daily-digest.md                   # 摘要工作流详情
 │   ├── moderation-policies.md            # 审核严重度与升级策略
 │   ├── sentiment-tracking.md             # 情绪评分方法论
-│   └── knowledge-extraction.md           # 知识提取启发式规则
+│   ├── knowledge-extraction.md           # 知识提取启发式规则
+│   ├── conversation-starters.md          # 讨论话题模板
+│   ├── mentor-matching.md                # 导师匹配算法
+│   └── community-challenges.md           # 挑战与任务模板
 └── scripts/
     ├── digest.py                         # 消息摘要生成器
     ├── event_detector.py                 # 异常检测引擎
-    └── thread_tracker.py                 # 未回答问题追踪器
+    ├── thread_tracker.py                 # 未回答问题追踪器
+    └── health_report.py                  # 社群健康报告生成器
 ```
 
 ## 参与贡献
