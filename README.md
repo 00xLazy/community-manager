@@ -1,6 +1,6 @@
 <p align="center">
   <img src="https://img.shields.io/badge/OpenClaw-Skill-ff6b35?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHRleHQgeT0iMjAiIGZvbnQtc2l6ZT0iMjAiPvCfppA8L3RleHQ+PC9zdmc+" alt="OpenClaw Skill">
-  <img src="https://img.shields.io/badge/Modules-12-blue?style=for-the-badge" alt="12 Modules">
+  <img src="https://img.shields.io/badge/Modules-34-blue?style=for-the-badge" alt="34 Modules">
   <img src="https://img.shields.io/badge/Channels-Discord%20%7C%20Telegram%20%7C%20Slack-5865F2?style=for-the-badge" alt="Channels">
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License">
 </p>
@@ -50,6 +50,20 @@
 | **Member Profiles** | Auto-generated expertise profiles based on activity |
 | **Community Health Dashboard** | Comprehensive metrics, trends, and actionable insights |
 | **Multilingual Bridge** | Real-time translation bridge between language-specific channels |
+| **Long Thread Summary** | Auto-summarize discussions exceeding a message threshold |
+| **Throwback Posts** | "On this day" posts from community history |
+| **Office Hours** | Scheduled expert Q&A sessions with queue management |
+| **Collaborative Projects** | Community project boards with team formation and tracking |
+| **Churn Prediction** | Detect at-risk members and trigger re-engagement |
+| **Social Graph** | Visualize member relationships and community structure |
+| **Smart Tags** | Auto-label members by expertise and behavior patterns |
+| **Win-Back Campaigns** | Personalized outreach to re-engage inactive members |
+| **Content Recommendation** | Suggest relevant historical content to members |
+| **Community Wiki** | Auto-maintained structured knowledge base |
+| **Content Creator Incentives** | Track and reward original tutorials and guides |
+| **Feedback Collector** | Aggregate bug reports, feature requests, and suggestions |
+| **Community Calendar** | Event management with RSVPs, reminders, and recaps |
+| **Admin Shift Scheduler** | Moderator rotation and workload tracking |
 
 ## Quick Start
 
@@ -169,6 +183,42 @@ For the full setup guide with per-feature permission matrix and troubleshooting,
 
 - **Multilingual Bridge** — Real-time translation bridge between language-specific channels. Shows original text alongside translation.
 
+### Operations & Analytics
+
+- **Long Thread Summary** — Auto-generates TL;DR when discussions exceed a configurable threshold (default 50 messages). Updates as conversations grow.
+
+- **Throwback Posts** — Daily "on this day" posts from community history. Highlights popular discussions, milestones, and memorable moments. See [`references/throwback-posts.md`](references/throwback-posts.md).
+
+- **Office Hours** — Recurring expert Q&A sessions with pre-submitted question queues, live management, and auto-generated recaps.
+
+- **Collaborative Projects** — Community project boards: propose projects, recruit teammates, track milestones, and showcase results.
+
+- **Community Calendar** — Full event lifecycle: creation, RSVPs, reminders (1 week/1 day/1 hour), and post-event recaps. See [`references/community-calendar.md`](references/community-calendar.md).
+
+### Member Intelligence
+
+- **Churn Prediction** — Detects members at risk of leaving based on activity drops, negative interactions, and unanswered questions. Admin-only alerts with suggested actions. See [`references/churn-prediction.md`](references/churn-prediction.md).
+
+- **Social Graph** — Maps member interaction patterns: clusters, bridge members, isolated members. Monthly insights for community structure optimization.
+
+- **Smart Tags** — Auto-labels members with expertise tags, role tags, and activity tags. Powers smart routing, mentor matching, and targeted announcements.
+
+- **Win-Back Campaigns** — Personalized re-engagement messages for inactive members based on their history and interests. See [`references/winback-campaigns.md`](references/winback-campaigns.md).
+
+- **Content Recommendation** — Suggests relevant historical discussions, guides, and resources. Weekly "Best Of" compilations.
+
+### Content & Knowledge
+
+- **Community Wiki** — Auto-maintained structured knowledge base aggregated from FAQ entries, discussions, and office hours. See [`references/community-wiki.md`](references/community-wiki.md).
+
+- **Content Creator Incentives** — Tracks original content (tutorials, guides, walkthroughs), rewards creators with points and badges, monthly spotlight.
+
+- **Feedback Collector** — Auto-detects and categorizes bug reports, feature requests, and suggestions from natural conversation. De-duplicates and generates weekly reports.
+
+### Admin Tools
+
+- **Admin Shift Scheduler** — Automated moderator rotation across timezones. Tracks workload, detects coverage gaps, and supports shift swaps.
+
 ## Scripts
 
 All scripts are standalone Python 3 tools with no external dependencies:
@@ -193,12 +243,16 @@ Key config options:
 | `sentiment_alert_threshold` | `0.3` | Negative sentiment ratio to trigger alert |
 | `thread_timeout_hours` | `24` | Hours before a question is flagged as overdue |
 | `leaderboard_day` | `"monday"` | Day to post weekly leaderboard |
+| `thread_summary_threshold` | `50` | Messages before auto-summarizing a thread |
+| `churn_inactive_days` | `14` | Days of inactivity before churn alert |
+| `winback_cooldown_days` | `30` | Min days between win-back messages |
+| `admin_shift_hours` | `8` | Hours per admin shift |
 
 ## Project Structure
 
 ```
 community-manager/
-├── SKILL.md                              # Skill definition (20 modules)
+├── SKILL.md                              # Skill definition (34 modules)
 ├── references/
 │   ├── setup-guide.md                    # Bot permissions & platform setup
 │   ├── faq-guide.md                      # FAQ knowledge base configuration
@@ -208,7 +262,12 @@ community-manager/
 │   ├── knowledge-extraction.md           # Knowledge capture heuristics
 │   ├── conversation-starters.md          # Discussion topic templates
 │   ├── mentor-matching.md                # Mentor matching algorithm
-│   └── community-challenges.md           # Challenge & quest templates
+│   ├── community-challenges.md           # Challenge & quest templates
+│   ├── throwback-posts.md               # Throwback content selection
+│   ├── churn-prediction.md              # Churn scoring methodology
+│   ├── winback-campaigns.md             # Win-back message templates
+│   ├── community-wiki.md               # Wiki organization schema
+│   └── community-calendar.md           # Event templates & RSVP tracking
 └── scripts/
     ├── digest.py                         # Message digest generator
     ├── event_detector.py                 # Anomaly detection engine

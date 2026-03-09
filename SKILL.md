@@ -10,14 +10,23 @@ description: >
   tracking unanswered threads, generating discussion topics, matching mentors
   with newcomers, running polls, managing AMA sessions, creating community
   challenges, building member profiles, generating community health reports,
-  or bridging multilingual channels. Triggers on phrases like "manage the
-  community", "answer FAQs", "summarize today's chat", "welcome new members",
-  "moderate the channel", "community digest", "community sentiment",
-  "knowledge base", "leaderboard", "route this question", "detect raid",
-  "schedule announcement", "unanswered questions", "thread tracker",
-  "start a discussion", "find me a mentor", "run a poll", "start AMA",
-  "community challenge", "member profile", "community health", "translate
-  channel".
+  bridging multilingual channels, summarizing long discussions, generating
+  throwback posts, managing office hours, coordinating collaborative projects,
+  predicting member churn, visualizing member relationships, auto-tagging
+  members, re-engaging inactive members, recommending content, maintaining
+  community wiki, incentivizing content creation, collecting feedback,
+  managing community events, or scheduling admin shifts. Triggers on phrases
+  like "manage the community", "answer FAQs", "summarize today's chat",
+  "welcome new members", "moderate the channel", "community digest",
+  "community sentiment", "knowledge base", "leaderboard", "route this
+  question", "detect raid", "schedule announcement", "unanswered questions",
+  "thread tracker", "start a discussion", "find me a mentor", "run a poll",
+  "start AMA", "community challenge", "member profile", "community health",
+  "translate channel", "summarize this thread", "what happened today last
+  year", "office hours", "start a project", "who's going inactive",
+  "member graph", "tag members", "bring back inactive users", "recommend
+  posts", "community wiki", "content creators", "collect feedback",
+  "community calendar", "admin schedule".
 metadata:
   openclaw:
     emoji: "🦐"
@@ -51,6 +60,20 @@ Automate community operations across Discord, Telegram, and Slack channels.
 18. **Member Profiles** — auto-generated expertise profiles based on activity
 19. **Community Health Dashboard** — comprehensive metrics and trend reports
 20. **Multilingual Bridge** — real-time translation bridge between language-specific channels
+21. **Long Thread Summary** — auto-summarize discussions that exceed a message threshold
+22. **Throwback Posts** — "on this day" posts from community history to build nostalgia
+23. **Office Hours** — scheduled Q&A sessions with experts, with queue management
+24. **Collaborative Projects** — community-driven project boards for team coordination
+25. **Churn Prediction** — detect members going inactive and trigger re-engagement
+26. **Social Graph** — visualize member relationships and interaction patterns
+27. **Smart Tags** — auto-label members by expertise, activity patterns, and contribution type
+28. **Win-Back Campaigns** — personalized outreach to re-engage inactive members
+29. **Content Recommendation** — suggest relevant historical discussions and resources
+30. **Community Wiki** — auto-maintained structured knowledge base from discussions
+31. **Content Creator Incentives** — track and reward original tutorials, guides, and posts
+32. **Feedback Collector** — aggregate bug reports, feature requests, and suggestions
+33. **Community Calendar** — manage events with reminders, RSVPs, and post-event recaps
+34. **Admin Shift Scheduler** — automated moderator rotation and workload tracking
 
 ---
 
@@ -1045,6 +1068,889 @@ message send --channel discord --to "channel:TARGET_CHANNEL_ID" --text "🌐 [#s
 
 ---
 
+## 21. Long Thread Summary
+
+Auto-summarize discussions that grow beyond a configurable message threshold.
+
+### Workflow
+
+1. Monitor threads/channels — when a conversation exceeds N messages (default: 50), trigger
+2. Use LLM to generate a concise TL;DR covering key points, decisions, and open questions
+3. Post the summary as a reply in the thread or pin it
+4. Update the summary if the discussion continues significantly
+
+### Summary Format
+
+```
+📝 Thread Summary (87 messages)
+
+🔑 Key Points:
+• The team agreed to migrate from REST to GraphQL for the v3 API
+• @alice proposed a phased rollout over 3 sprints
+• Concern raised about backward compatibility with mobile clients
+
+❓ Open Questions:
+• Who will own the migration tooling? (no volunteer yet)
+• Should we deprecate REST immediately or run both in parallel?
+
+👥 Main Participants: @alice, @bob, @carol, @dave (12 others)
+```
+
+### Commands
+
+```bash
+# Read thread messages
+message read --channel discord --channelId "THREAD_ID" --limit 100
+
+# Post summary
+message send --channel discord --to "channel:THREAD_ID" --text "📝 Thread Summary: ..."
+```
+
+### Guidelines
+
+- Only summarize when thread exceeds threshold — don't interrupt short discussions
+- Include attribution for key contributions
+- Distinguish between decisions made and open questions
+- Update summary if 20+ new messages arrive after last summary
+- Never summarize private/DM conversations
+
+---
+
+## 22. Throwback Posts
+
+Generate "on this day" posts from community history to build nostalgia and highlight milestones.
+
+### Workflow
+
+1. Daily, search message history for the same date in previous months/years
+2. Identify notable events: popular discussions, milestones, funny moments
+3. Format and post a throwback message
+
+### Throwback Format
+
+```
+📅 On This Day — 1 Year Ago
+
+🔥 Hot Discussion: "Should we switch to Rust?"
+   → 47 replies, most heated debate of the month!
+   → Final consensus: "Maybe next year" 😄
+
+🎉 Milestone: Community hit 1,000 members!
+
+💡 Best Answer: @bob explained WebSocket reconnection
+   → Still one of our most-referenced answers
+
+#throwback #community-memories
+```
+
+### Commands
+
+```bash
+# Search historical messages
+message search --channel discord --channelId "GENERAL_ID" --after "2025-03-09T00:00:00Z" --before "2025-03-10T00:00:00Z"
+
+# Post throwback
+message send --channel discord --to "channel:GENERAL_ID" --text "📅 On This Day: ..."
+```
+
+### Guidelines
+
+- Post max 1 throwback per day (morning, before daily digest)
+- Only post if there's genuinely interesting content — skip boring days
+- Avoid resurfacing controversial/negative moments
+- Start generating throwbacks after the community has at least 3 months of history
+- See [references/throwback-posts.md](references/throwback-posts.md) for content selection criteria
+
+---
+
+## 23. Office Hours
+
+Manage structured expert Q&A sessions with queue management and follow-up.
+
+### Workflow
+
+1. Admin schedules office hours: "schedule office hours with @expert every Thursday 2-3pm"
+2. Bot announces upcoming office hours and collects pre-submitted questions
+3. During the session, manage the question queue (similar to AMA but recurring)
+4. After the session, generate a summary and archive Q&A pairs
+
+### Office Hours Format
+
+**Announcement:**
+```
+🕐 Office Hours — Thursday, March 13
+
+Expert: @alice (Backend Architecture)
+Time: 2:00-3:00 PM UTC
+Channel: #office-hours
+
+📝 Pre-submit your questions by replying here!
+Already queued: 5 questions
+```
+
+**During Session:**
+```
+🟢 Office Hours LIVE — @alice
+
+Current question from @user1:
+"What's the best approach for handling distributed transactions?"
+
+⏰ Time remaining: 42 minutes | Questions left: 4
+Next up: @user2's question about caching strategies
+```
+
+**Summary:**
+```
+📋 Office Hours Recap — March 13
+
+Expert: @alice | Duration: 58 min
+Questions answered: 7/8
+Attendees: 23
+
+Top Q&A:
+1. Distributed transactions → Saga pattern recommended
+2. Caching strategies → Redis + local cache hybrid
+3. API versioning → URL-based for public APIs
+
+📌 2 answers added to knowledge base
+Next session: March 20, 2:00 PM UTC
+```
+
+### Commands
+
+```bash
+# Announce office hours
+message send --channel discord --to "channel:GENERAL_ID" --text "🕐 Office Hours coming up: ..."
+
+# Manage queue during session
+message send --channel discord --to "channel:OFFICE_HOURS_ID" --text "🟢 Current question: ..."
+```
+
+### Guidelines
+
+- Office hours are recurring — different from one-off AMAs
+- Pre-submitted questions get priority (sorted by upvotes)
+- Walk-in questions allowed if time permits
+- Auto-extract Q&A pairs to knowledge base after each session
+- Send reminder 1 hour and 10 minutes before start
+
+---
+
+## 24. Collaborative Projects
+
+Community-driven project coordination with team formation, progress tracking, and showcasing.
+
+### Workflow
+
+1. Member proposes a project: "!project new Build a community bot dashboard"
+2. Bot creates a project thread with roles/skills needed
+3. Members join by reacting or commenting
+4. Track milestones and progress updates
+5. Showcase completed projects
+
+### Project Board Format
+
+```
+🚀 Active Community Projects
+
+1. 📦 Community Bot Dashboard
+   Lead: @alice | Team: 4/6 members
+   Status: ██████░░░░ 60% | Sprint 2/3
+   Needs: 1 frontend dev, 1 designer
+   Channel: #project-dashboard
+
+2. 📚 Interactive Tutorial Series
+   Lead: @bob | Team: 3/3 members
+   Status: ████████░░ 80% | Final review
+   Channel: #project-tutorials
+
+3. 🌐 Multilingual Docs
+   Lead: @carol | Team: 7 members
+   Status: ████░░░░░░ 40% | Translating
+   Needs: Japanese, Korean translators
+   Channel: #project-docs
+```
+
+### Commands
+
+```bash
+# Post project board
+message send --channel discord --to "channel:PROJECTS_ID" --text "🚀 Active Projects: ..."
+
+# Create project thread
+message send --channel discord --to "channel:PROJECTS_ID" --text "📦 New Project: ..."
+```
+
+### Guidelines
+
+- Each project gets its own thread/channel
+- Weekly progress check-in reminders
+- Archive inactive projects after 30 days of no updates
+- Showcase completed projects in #showcase with a celebration post
+- Award "Team Player" badges to participants
+
+---
+
+## 25. Churn Prediction
+
+Detect members at risk of leaving and trigger proactive re-engagement.
+
+### Workflow
+
+1. Track activity patterns for each member: message frequency, reaction frequency, login times
+2. Build a baseline for each member (their "normal" activity level)
+3. Detect significant drops: member usually posts 5x/day but hasn't posted in 3 days
+4. Score churn risk: low / medium / high
+5. Alert admin with context and recommended actions
+
+### Alert Format
+
+```
+⚠️ Churn Risk Report — Weekly
+
+🔴 High Risk (likely to leave):
+• @alice — No activity for 14 days (was posting 5x/day)
+  Last active in: #dev | Possible cause: unanswered question on March 1
+  Suggested action: personal reach-out from admin
+
+• @bob — Activity dropped 90% over 2 weeks
+  Last active in: #general | Possible cause: negative interaction on Feb 28
+  Suggested action: check-in DM
+
+🟡 Medium Risk (declining engagement):
+• @carol — Activity down 50% this week vs. last month average
+• @dave — Stopped reacting to messages (still reading)
+
+📊 Overall: 3% of active members at high churn risk (vs. 2% last week)
+```
+
+### Signals Tracked
+
+| Signal | Weight | Description |
+|--------|--------|-------------|
+| Message frequency drop | High | Fewer messages than personal baseline |
+| Reaction stop | Medium | Stopped reacting but may still lurk |
+| Channel narrowing | Medium | Active in fewer channels than usual |
+| Negative last interaction | High | Last message was negative or unanswered |
+| Login without posting | Low | Opening the app but not engaging |
+
+### Commands
+
+```bash
+# Generate churn report
+# LLM prompt: analyze member activity data and identify at-risk members
+
+# Alert admin
+message send --channel discord --to "channel:ADMIN_CHANNEL_ID" --text "⚠️ Churn Risk Report: ..."
+```
+
+### Guidelines
+
+- Never publicly flag someone as "at risk" — admin-only alerts
+- Focus on previously active members, not lurkers (they have a different pattern)
+- Suggest specific actions: DM, mention in a relevant discussion, ask for their opinion
+- Track if re-engagement actions worked — learn what brings people back
+- See [references/churn-prediction.md](references/churn-prediction.md) for scoring methodology
+
+---
+
+## 26. Social Graph
+
+Visualize and analyze member interaction patterns and community structure.
+
+### Workflow
+
+1. Track who replies to whom, who reacts to whose messages, who co-participates in threads
+2. Build an interaction graph with weighted edges
+3. Identify clusters (sub-communities), bridges (members who connect clusters), and isolated members
+4. Generate insights for community management
+
+### Report Format
+
+```
+🕸️ Social Graph Insights — March 2026
+
+🏘️ Community Clusters:
+• Frontend Crew (12 members): @alice, @bob, @carol... — centered around #react
+• DevOps Guild (8 members): @dave, @eve... — centered around #infrastructure
+• Newcomer Group (15 members): loosely connected, mostly in #general
+
+🌉 Bridge Members (connect different groups):
+• @alice — links Frontend Crew ↔ DevOps Guild (answers in both)
+• @bob — links Frontend Crew ↔ Newcomer Group (active mentor)
+
+🏝️ Isolated Members (active but not connected):
+• @frank — posts often but rarely gets replies (consider routing to relevant channels)
+• @grace — only interacts with bot, not other members
+
+💡 Recommendations:
+• Create a cross-team event to connect Frontend Crew and DevOps Guild
+• @frank might benefit from a mentor match
+• Consider a "buddy system" for the Newcomer Group
+```
+
+### Commands
+
+```bash
+# Generate social graph analysis
+# LLM prompt: analyze interaction patterns and identify clusters, bridges, isolated members
+
+# Post insights
+message send --channel discord --to "channel:ADMIN_CHANNEL_ID" --text "🕸️ Social Graph: ..."
+```
+
+### Guidelines
+
+- Generate monthly — social patterns change slowly
+- Focus on actionable insights, not raw data
+- Never share individual interaction data publicly
+- Use graph data to improve mentor matching (module 14) and smart routing (module 9)
+- Identify and nurture "bridge" members — they're critical for community cohesion
+
+---
+
+## 27. Smart Tags
+
+Automatically label members based on activity patterns, expertise, and contribution type.
+
+### Workflow
+
+1. Analyze each member's activity: channels frequented, topics discussed, help given
+2. Assign tags automatically based on detected patterns
+3. Update tags weekly as behavior evolves
+4. Use tags for smart routing, mentor matching, and targeted announcements
+
+### Tag Categories
+
+**Expertise Tags** (based on answers given):
+```
+@alice: [react] [typescript] [frontend] [testing]
+@bob: [python] [devops] [docker] [ci-cd]
+@carol: [design] [ux] [figma] [accessibility]
+```
+
+**Role Tags** (based on behavior):
+```
+@alice: [helper] [mentor] [early-adopter]
+@bob: [creator] [documenter] [bug-reporter]
+@carol: [community-builder] [welcomer] [translator]
+```
+
+**Activity Tags** (based on patterns):
+```
+@alice: [night-owl] [weekday-active] [high-frequency]
+@bob: [morning-person] [weekend-warrior] [consistent]
+@carol: [burst-poster] [deep-diver] [multi-channel]
+```
+
+### Use Cases
+
+- **Targeted announcements**: "Notify all [devops] tagged members about the new CI pipeline"
+- **Smart routing**: "Route Docker questions to members tagged [docker]"
+- **Mentor matching**: Match newcomer interested in React with [react][helper] tagged members
+- **Event planning**: Schedule events when [night-owl] or [morning-person] members are active
+
+### Commands
+
+```bash
+# Query tagged members
+# "Who in the community is tagged [react]?"
+
+# Update tags
+# Tags are computed automatically — no manual commands needed
+
+# Use tags for targeting
+message send --channel discord --to "channel:DEVOPS_ID" --text "📢 Attention [devops] members: ..."
+```
+
+### Guidelines
+
+- Tags are internal/admin-only by default — members can view their own tags
+- Members can opt-out of tagging
+- Update weekly to reflect evolving activity
+- Don't over-tag — max 5 expertise tags, 3 role tags, 3 activity tags per member
+- Tags inform other modules but never replace human judgment
+
+---
+
+## 28. Win-Back Campaigns
+
+Personalized outreach to re-engage members who have gone inactive.
+
+### Workflow
+
+1. Identify inactive members (no activity for 14+ days, previously active)
+2. Analyze their interests and past contributions
+3. Generate a personalized message highlighting what they've missed
+4. Send via DM (if allowed) or tagged mention
+5. Track response rate and adjust approach
+
+### Message Templates
+
+**For a helper/expert:**
+```
+👋 Hey @alice, we miss you in the community!
+
+Since you've been away:
+• 12 React questions went unanswered that match your expertise
+• @bob mentioned your tutorial in a discussion yesterday
+• We launched a new #typescript channel you might like
+
+Your contributions really made a difference — 23 people thanked you last month! No pressure, just wanted you to know we're here. 😊
+```
+
+**For a social/active member:**
+```
+👋 Hey @carol, the community hasn't been the same without you!
+
+Here's what you missed:
+• 🔥 Hot debate: "Is Tailwind actually good?" (47 replies!)
+• 🎉 We hit 500 members!
+• 📊 Poll results: TypeScript won as the most-loved tool
+
+Jump back in anytime — #general misses your energy!
+```
+
+**For a newcomer who left early:**
+```
+👋 Hey @dave, just checking in!
+
+We noticed you joined a few weeks ago but haven't been around much. If you had a question that went unanswered, we're sorry!
+
+Here are some ways to get involved:
+• 💬 Introduce yourself in #introductions
+• ❓ Ask anything in #support — avg response time is 12 min
+• 🤝 Want a mentor? Just say "!mentor match me"
+
+We'd love to have you back!
+```
+
+### Commands
+
+```bash
+# Send win-back DM
+message send --channel discord --to "user:USER_ID" --text "👋 Hey @user, we miss you..."
+
+# Log win-back attempt
+message send --channel discord --to "channel:ADMIN_CHANNEL_ID" --text "📤 Win-back sent to @user (inactive 21 days)"
+```
+
+### Guidelines
+
+- Max 1 win-back message per member per 30 days — don't spam
+- Never send to members who opted out of DMs
+- Personalize based on their history — generic messages don't work
+- Track success rate: did they come back? How long did they stay?
+- Escalate to admin for high-value members (top contributors who went silent)
+- See [references/winback-campaigns.md](references/winback-campaigns.md) for templates and timing
+
+---
+
+## 29. Content Recommendation
+
+Proactively suggest relevant historical discussions, resources, and content to members.
+
+### Workflow
+
+1. When a member asks a question or discusses a topic, search history for related content
+2. If relevant past discussions exist, suggest them alongside or after the answer
+3. Periodically post "best of" compilations in relevant channels
+
+### Recommendation Format
+
+**Inline (after answering a question):**
+```
+💡 Related discussions you might find useful:
+• "GraphQL vs REST debate" (Feb 2026, 34 replies) — covers migration strategies
+• @alice's guide: "Setting up Apollo Server" (pinned in #dev)
+• FAQ: "GraphQL authentication patterns" — from our knowledge base
+```
+
+**Weekly "Best Of" Post:**
+```
+⭐ Best of This Week — Top Community Content
+
+📚 Most Helpful Answers:
+1. @bob on database indexing strategies (18 👍)
+2. @carol's Docker debugging tips (14 👍)
+3. @dave's explanation of JWT refresh tokens (12 👍)
+
+🔥 Most Discussed:
+1. "Monorepo tooling in 2026" — 42 replies
+2. "AI coding assistants review" — 38 replies
+
+📌 New Knowledge Base Entries: 5 this week
+```
+
+### Commands
+
+```bash
+# Search for related content
+message search --channel discord --channelId "CHANNEL_ID" --query "GraphQL migration" --limit 5
+
+# Post recommendation
+message send --channel discord --to "channel:CHANNEL_ID" --text "💡 Related: ..."
+
+# Post weekly best-of
+message send --channel discord --to "channel:GENERAL_ID" --text "⭐ Best of This Week: ..."
+```
+
+### Guidelines
+
+- Max 1 recommendation per question — don't overwhelm
+- Only recommend content with high engagement (5+ reactions or replies)
+- "Best of" posts go out weekly, after the digest
+- Recommendations improve FAQ matching and reduce repeat questions
+- Use member tags (module 27) to personalize recommendations
+
+---
+
+## 30. Community Wiki
+
+Auto-maintain a structured, living knowledge base from community discussions.
+
+### Workflow
+
+1. Aggregate knowledge from: FAQ entries, extracted Q&A pairs, pinned messages, popular discussions
+2. Organize into categories/topics automatically using LLM
+3. Generate and maintain wiki pages per topic
+4. Update pages when new relevant knowledge is captured
+5. Provide search interface for members
+
+### Wiki Structure
+
+```
+📖 Community Wiki
+
+📂 Getting Started
+├── Installation Guide (from FAQ, updated March 9)
+├── First Steps Tutorial (from @alice's guide, Feb 15)
+└── Common Errors & Fixes (auto-generated from #support, 23 entries)
+
+📂 Architecture
+├── API Design Patterns (from office hours with @bob, March 6)
+├── Database Selection Guide (from community discussion, 47 replies)
+└── Microservices vs Monolith (from AMA with @carol, Feb 20)
+
+📂 DevOps
+├── Docker Best Practices (curated from 12 discussions)
+├── CI/CD Pipeline Setup (from @dave's tutorial)
+└── Monitoring & Alerting (from knowledge base, 8 entries)
+
+Last updated: March 9, 2026 | Total entries: 67
+```
+
+### Commands
+
+```bash
+# Generate wiki page
+# LLM prompt: "Organize these knowledge base entries into a structured wiki page about {topic}"
+
+# Post wiki update notification
+message send --channel discord --to "channel:GENERAL_ID" --text "📖 Wiki Updated: 3 new entries in 'Getting Started'"
+
+# Search wiki
+# "search wiki for Docker networking"
+```
+
+### Guidelines
+
+- Auto-update when new knowledge is extracted (module 7)
+- Keep entries concise — link to full discussions for details
+- Credit original authors
+- Admin can edit/reorganize wiki entries
+- Version history: track changes over time
+- See [references/community-wiki.md](references/community-wiki.md) for organization schema
+
+---
+
+## 31. Content Creator Incentives
+
+Track, encourage, and reward original content creation (tutorials, guides, blog posts).
+
+### Workflow
+
+1. Detect original content: long-form posts, tutorials, code walkthroughs, guides
+2. Track engagement metrics: views, reactions, bookmarks, replies
+3. Highlight top content creators on leaderboard
+4. Award special badges and recognition
+
+### Content Types Tracked
+
+| Type | Detection | Points |
+|------|-----------|--------|
+| Tutorial / Guide | 500+ chars, step-by-step format | 30 pts |
+| Code Walkthrough | Code blocks with explanation | 20 pts |
+| Resource Compilation | 5+ curated links with descriptions | 15 pts |
+| Community Newsletter | Weekly/monthly roundup posts | 25 pts |
+| Translation | FAQ/guide translated to another language | 20 pts |
+
+### Creator Spotlight Format
+
+```
+✍️ Content Creator Spotlight — March 2026
+
+🏆 Top Creators:
+1. @alice — 3 tutorials, 89 total reactions
+   Latest: "Building a real-time dashboard with WebSockets"
+2. @bob — 2 guides + 5 translations, 67 total reactions
+   Latest: "Docker networking explained for beginners"
+3. @carol — 1 mega-guide, 54 reactions
+   Latest: "The complete guide to testing React components"
+
+🌟 Rising Creator: @dave (first tutorial published this month!)
+
+📊 Community Content Stats:
+• 12 original pieces published this month
+• 340 total reactions on community content
+• Most popular: @alice's WebSocket tutorial (42 👍)
+```
+
+### Commands
+
+```bash
+# Post creator spotlight
+message send --channel discord --to "channel:GENERAL_ID" --text "✍️ Content Creator Spotlight: ..."
+
+# Award creator badge
+# Assign Discord role or update member profile
+```
+
+### Guidelines
+
+- Quality over quantity — a single great guide beats 10 low-effort posts
+- Distinguish between original content and reshared links
+- Monthly spotlight post to recognize creators
+- "Creator" badge at 5+ original pieces with positive reception
+- Cross-promote community content in daily digest
+
+---
+
+## 32. Feedback Collector
+
+Aggregate, categorize, and prioritize community feedback including bug reports, feature requests, and suggestions.
+
+### Workflow
+
+1. Detect feedback signals: messages containing "bug", "feature request", "suggestion", "wishlist", "it would be nice if"
+2. Categorize: bug report / feature request / improvement / complaint / praise
+3. De-duplicate similar feedback
+4. Generate periodic feedback reports for the team
+5. Track feedback status: new → acknowledged → in-progress → resolved
+
+### Feedback Report Format
+
+```
+📋 Community Feedback Report — Week of March 3-9
+
+🐛 Bug Reports (7 new):
+1. [Critical] Login fails after password reset — 5 reports (de-duped)
+2. [Medium] Dark mode breaks on settings page — 2 reports
+3. [Low] Typo in onboarding email — 1 report
+
+✨ Feature Requests (12 new):
+1. 🔥 GitHub integration (8 upvotes) — most requested!
+2. 📱 Mobile app (6 upvotes)
+3. 🔔 Custom notification settings (4 upvotes)
+4. ... and 9 more
+
+💡 Suggestions (3 new):
+1. "Add code syntax highlighting to the editor"
+2. "Allow thread-level muting"
+3. "Weekly office hours with the team"
+
+📊 Feedback Trends:
+• Bug reports: ↓20% vs last week (good!)
+• Feature requests: ↑15% (community is engaged)
+• Top category: integrations (mentioned 14 times)
+
+✅ Resolved This Week: 3 items
+```
+
+### Commands
+
+```bash
+# Generate feedback report
+# LLM prompt: "Categorize and summarize these community messages as feedback..."
+
+# Post report
+message send --channel discord --to "channel:ADMIN_CHANNEL_ID" --text "📋 Feedback Report: ..."
+
+# Acknowledge feedback publicly
+message send --channel discord --to "channel:GENERAL_ID" --text "✅ We heard you! GitHub integration is now on our roadmap. Thanks @user1, @user2 for the suggestion!"
+```
+
+### Guidelines
+
+- Auto-detect feedback from natural conversation — don't require special commands
+- De-duplicate aggressively — cluster similar requests
+- Public acknowledgment when feedback leads to action
+- Never ignore critical bug reports — escalate immediately
+- Track resolution rate as a community health metric
+
+---
+
+## 33. Community Calendar
+
+Manage community events with RSVPs, reminders, and post-event recaps.
+
+### Workflow
+
+1. Admin creates event: "create event: Community Hackathon, March 22, 10am-6pm UTC"
+2. Bot posts event with RSVP reactions
+3. Send reminders: 1 week, 1 day, 1 hour before
+4. During event: manage logistics (links, resources, updates)
+5. After event: generate recap with attendance and highlights
+
+### Event Format
+
+**Announcement:**
+```
+📅 Upcoming Event
+
+🎉 Community Hackathon
+📆 March 22, 2026 | 10:00 AM - 6:00 PM UTC
+📍 Online (#hackathon channel)
+🎯 Theme: Build something useful for the community
+
+📝 Details:
+• Teams of 2-4 people
+• Any tech stack welcome
+• Prizes for top 3 projects
+• Mentors available for help
+
+React to RSVP:
+✅ I'm in! | ❓ Maybe | 👀 Just watching
+
+Currently signed up: 23 members
+```
+
+**Reminder:**
+```
+⏰ Reminder: Community Hackathon starts in 1 hour!
+
+📍 Head to #hackathon
+👥 32 participants registered
+📋 Quick links: [Rules] [Team Board] [Submission Form]
+
+Good luck everyone! 🚀
+```
+
+**Recap:**
+```
+📋 Event Recap — Community Hackathon
+
+⏱️ Duration: 8 hours | 👥 Attendees: 28/32 (88% show rate)
+
+🏆 Winners:
+1. 🥇 Team Alpha — "Community Dashboard" (12 votes)
+2. 🥈 Team Beta — "FAQ Search Engine" (9 votes)
+3. 🥉 Team Gamma — "Onboarding Flow Wizard" (7 votes)
+
+📊 Stats:
+• 8 teams participated
+• 12 projects submitted
+• 156 messages in #hackathon during the event
+
+💬 Highlights:
+• @alice live-coded a full dashboard in 4 hours
+• Team Beta's demo got a standing ovation (20 🎉 reactions)
+
+Next event: TBD — suggest ideas in #events!
+```
+
+### Commands
+
+```bash
+# Post event
+message send --channel discord --to "channel:EVENTS_ID" --text "📅 Event: ..."
+
+# Send reminder
+message send --channel discord --to "channel:GENERAL_ID" --text "⏰ Reminder: ..."
+
+# Post recap
+message send --channel discord --to "channel:EVENTS_ID" --text "📋 Recap: ..."
+```
+
+### Guidelines
+
+- Support recurring events (weekly meetups, monthly hackathons)
+- Send reminders at configurable intervals
+- Track RSVP vs actual attendance for planning
+- Archive past events for throwback posts (module 22)
+- See [references/community-calendar.md](references/community-calendar.md) for event templates
+
+---
+
+## 34. Admin Shift Scheduler
+
+Automated moderator rotation, workload tracking, and coverage planning.
+
+### Workflow
+
+1. Configure admin team and their availability/timezone
+2. Auto-generate weekly shift schedule ensuring coverage
+3. Track each admin's moderation workload (actions taken, time spent)
+4. Alert when a shift is uncovered or an admin is overloaded
+
+### Schedule Format
+
+```
+📋 Admin Schedule — Week of March 10-16
+
+| Time (UTC) | Mon | Tue | Wed | Thu | Fri | Sat | Sun |
+|------------|-----|-----|-----|-----|-----|-----|-----|
+| 00-08      | @alice | @bob | @alice | @bob | @alice | @carol | @carol |
+| 08-16      | @dave | @dave | @eve | @dave | @eve | @alice | @bob |
+| 16-24      | @bob | @alice | @bob | @carol | @carol | @dave | @eve |
+
+⚠️ Gap: Sunday 00-08 — no admin available. @carol, can you cover?
+
+📊 Last Week Workload:
+• @alice: 12 mod actions, 3h active
+• @bob: 8 mod actions, 2.5h active
+• @carol: 15 mod actions, 4h active (consider reducing load)
+• @dave: 6 mod actions, 2h active
+• @eve: 10 mod actions, 3h active
+```
+
+### Commands
+
+```bash
+# Post schedule
+message send --channel discord --to "channel:ADMIN_CHANNEL_ID" --text "📋 Admin Schedule: ..."
+
+# Alert for uncovered shift
+message send --channel discord --to "channel:ADMIN_CHANNEL_ID" --text "⚠️ Shift gap detected: ..."
+
+# Weekly workload report
+message send --channel discord --to "channel:ADMIN_CHANNEL_ID" --text "📊 Admin Workload: ..."
+```
+
+### Configuration
+
+```json
+{
+  "admins": [
+    {"id": "USER_ID", "name": "alice", "timezone": "US/Pacific", "max_hours_week": 10},
+    {"id": "USER_ID", "name": "bob", "timezone": "Europe/London", "max_hours_week": 8}
+  ],
+  "shift_duration_hours": 8,
+  "min_coverage": 1,
+  "schedule_post_day": "sunday"
+}
+```
+
+### Guidelines
+
+- Respect timezone preferences — don't schedule someone at 3am their time
+- Balance workload — track cumulative hours and rotate fairly
+- Allow shift swaps: "@alice swap Monday with @bob's Tuesday"
+- Alert if coverage drops below minimum (default: 1 admin online)
+- Monthly summary of admin contributions for recognition
+
+---
+
 ## Configuration
 
 The skill reads configuration from `~/.openclaw/community/config.json`:
@@ -1085,7 +1991,21 @@ The skill reads configuration from `~/.openclaw/community/config.json`:
     "challenges": true,
     "member_profiles": true,
     "health_dashboard": true,
-    "multilingual_bridge": true
+    "multilingual_bridge": true,
+    "long_thread_summary": true,
+    "throwback_posts": true,
+    "office_hours": true,
+    "collaborative_projects": true,
+    "churn_prediction": true,
+    "social_graph": true,
+    "smart_tags": true,
+    "winback_campaigns": true,
+    "content_recommendation": true,
+    "community_wiki": true,
+    "content_creator_incentives": true,
+    "feedback_collector": true,
+    "community_calendar": true,
+    "admin_shift_scheduler": true
   },
   "digest_time": "09:00",
   "moderation_level": "medium",
@@ -1094,6 +2014,14 @@ The skill reads configuration from `~/.openclaw/community/config.json`:
   "leaderboard_day": "monday",
   "conversation_starter_silence_hours": 4,
   "health_report_day": "monday",
+  "thread_summary_threshold": 50,
+  "throwback_min_history_days": 90,
+  "churn_inactive_days": 14,
+  "winback_cooldown_days": 30,
+  "wiki_update_frequency": "weekly",
+  "feedback_report_day": "friday",
+  "admin_shift_hours": 8,
+  "calendar_reminder_intervals": [168, 24, 1],
   "routing": {
     "technical": "SUPPORT_CHANNEL_ID",
     "billing": "BILLING_CHANNEL_ID",

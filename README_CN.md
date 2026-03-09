@@ -1,6 +1,6 @@
 <p align="center">
   <img src="https://img.shields.io/badge/OpenClaw-Skill-ff6b35?style=for-the-badge" alt="OpenClaw Skill">
-  <img src="https://img.shields.io/badge/模块-12个-blue?style=for-the-badge" alt="12 Modules">
+  <img src="https://img.shields.io/badge/模块-34个-blue?style=for-the-badge" alt="34 Modules">
   <img src="https://img.shields.io/badge/渠道-Discord%20%7C%20Telegram%20%7C%20Slack-5865F2?style=for-the-badge" alt="Channels">
   <img src="https://img.shields.io/badge/开源协议-MIT-green?style=for-the-badge" alt="MIT License">
 </p>
@@ -50,6 +50,20 @@
 | **成员档案** | 基于活动数据自动生成的专长档案 |
 | **社群健康仪表盘** | 综合指标、趋势分析和可执行建议 |
 | **多语言桥接** | 不同语言频道之间的实时翻译桥接 |
+| **长讨论摘要** | 讨论超过阈值时自动生成 TL;DR |
+| **今日回顾** | "历史上的今天"社群回忆帖 |
+| **Office Hours** | 专家定期答疑，支持问题排队管理 |
+| **协作项目板** | 社群协作项目组队、进度追踪、成果展示 |
+| **流失预警** | 检测即将流失的活跃成员，触发挽留 |
+| **成员关系图谱** | 可视化成员互动关系和社群结构 |
+| **智能标签** | 按专长、行为模式自动给成员打标签 |
+| **回流召回** | 个性化消息召回沉默成员 |
+| **精华推荐** | 推荐相关的历史讨论和优质内容 |
+| **社群 Wiki** | 从讨论中自动维护结构化知识库 |
+| **内容创作激励** | 追踪和奖励原创教程、指南 |
+| **反馈收集器** | 自动收集 Bug 报告、功能建议并分类汇总 |
+| **社群日历** | 活动管理：创建、报名、提醒、活动回顾 |
+| **管理员轮值** | 管理员自动排班和工作量追踪 |
 
 ## 快速开始
 
@@ -169,6 +183,42 @@ openclaw skill install ./community-manager
 
 - **多语言桥接** — 不同语言频道间的实时翻译桥接。翻译旁附原文，保持透明。
 
+### 运营与分析模块
+
+- **长讨论摘要** — 讨论超过可配置阈值（默认 50 条）时自动生成 TL;DR。随讨论增长自动更新。
+
+- **今日回顾** — 每日"历史上的今天"帖子，展示热门讨论、社群里程碑和有趣时刻。详见 [`references/throwback-posts.md`](references/throwback-posts.md)。
+
+- **Office Hours** — 定期专家答疑环节，支持问题预提交、排队管理、自动生成回顾摘要。
+
+- **协作项目板** — 社群协作项目管理：发起项目、招募队友、追踪里程碑、展示成果。
+
+- **社群日历** — 活动全生命周期管理：创建、报名、提醒（1周/1天/1小时）、活动后回顾。详见 [`references/community-calendar.md`](references/community-calendar.md)。
+
+### 成员智能模块
+
+- **流失预警** — 基于活跃度下降、负面互动、未回答问题等信号检测流失风险。仅管理员可见，附带建议操作。详见 [`references/churn-prediction.md`](references/churn-prediction.md)。
+
+- **成员关系图谱** — 分析成员互动模式：社群簇、桥梁成员、孤立成员。月度洞察助力社群结构优化。
+
+- **智能标签** — 自动为成员打上专长标签、角色标签和活跃标签。驱动智能路由、导师匹配和精准推送。
+
+- **回流召回** — 基于成员历史和兴趣生成个性化召回消息，拉回沉默成员。详见 [`references/winback-campaigns.md`](references/winback-campaigns.md)。
+
+- **精华推荐** — 推荐相关的历史讨论、指南和资源。每周"精华回顾"合集。
+
+### 内容与知识模块
+
+- **社群 Wiki** — 从 FAQ、讨论、答疑环节自动聚合维护结构化知识库。详见 [`references/community-wiki.md`](references/community-wiki.md)。
+
+- **内容创作激励** — 追踪原创内容（教程、指南、代码分享），积分和徽章奖励创作者，月度创作者聚光灯。
+
+- **反馈收集器** — 从自然对话中自动识别和分类 Bug 报告、功能建议和改进意见。去重后生成周报。
+
+### 管理工具模块
+
+- **管理员轮值** — 跨时区管理员自动排班。追踪工作量、检测空档、支持换班。
+
 ## 脚本工具
 
 所有脚本均为独立的 Python 3 工具，无外部依赖：
@@ -193,12 +243,16 @@ openclaw skill install ./community-manager
 | `sentiment_alert_threshold` | `0.3` | 触发情绪预警的负面比例 |
 | `thread_timeout_hours` | `24` | 问题标记为逾期的小时数 |
 | `leaderboard_day` | `"monday"` | 每周排行榜发布日 |
+| `thread_summary_threshold` | `50` | 触发长讨论自动摘要的消息数 |
+| `churn_inactive_days` | `14` | 触发流失预警的不活跃天数 |
+| `winback_cooldown_days` | `30` | 召回消息最小间隔天数 |
+| `admin_shift_hours` | `8` | 管理员每班时长 |
 
 ## 项目结构
 
 ```
 community-manager/
-├── SKILL.md                              # Skill 定义（20 个模块）
+├── SKILL.md                              # Skill 定义（34 个模块）
 ├── references/
 │   ├── setup-guide.md                    # Bot 权限与平台设置指南
 │   ├── faq-guide.md                      # FAQ 知识库配置指南
@@ -208,7 +262,12 @@ community-manager/
 │   ├── knowledge-extraction.md           # 知识提取启发式规则
 │   ├── conversation-starters.md          # 讨论话题模板
 │   ├── mentor-matching.md                # 导师匹配算法
-│   └── community-challenges.md           # 挑战与任务模板
+│   ├── community-challenges.md           # 挑战与任务模板
+│   ├── throwback-posts.md               # 回顾帖内容选择规则
+│   ├── churn-prediction.md              # 流失评分方法论
+│   ├── winback-campaigns.md             # 召回消息模板
+│   ├── community-wiki.md               # Wiki 组织架构
+│   └── community-calendar.md           # 活动模板与报名追踪
 └── scripts/
     ├── digest.py                         # 消息摘要生成器
     ├── event_detector.py                 # 异常检测引擎
